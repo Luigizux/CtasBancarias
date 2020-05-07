@@ -1,0 +1,23 @@
+
+    <form (submit)="false">
+        <input type="text" #Rut required>
+        <br>
+        <button (click)="getTask(Rut.value)">Obtener cuentas</button>
+    </form>
+    <br>
+    Nombre usuario: {{ nombre }}
+    <br>
+
+        <table class="egt">
+            <tr>
+              <td> Número de cuenta </td>
+              <td> Tipo de cuenta </td>
+              <td> Monto </td>
+            </tr>
+            <tr *ngFor="let i of Cta">
+              <td> {{ i.numeroCuenta }} </td>
+              <td> {{ i.tipo }} </td>
+              <td> {{ i.montoCuenta }} </td>
+            </tr>
+          </table>
+

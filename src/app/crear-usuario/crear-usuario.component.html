@@ -1,0 +1,36 @@
+<form (submit)="false">
+    <table >
+      <tr>
+        <td> Rut: </td>
+        <td> <input #Rut type="text" required> </td>
+        <td> - <input type="text"> </td>
+      </tr>
+      <tr>
+        <td> Nombre: </td>
+        <td> <input #Nombre type="text" formControl="nombre" required> </td>
+      </tr>
+      <tr>
+        <td> Apellido: </td>
+        <td> <input #Apellido type="text" formControl="apellido" required> </td>
+      </tr>
+      <tr>
+        <td> Tipo de cuenta: </td>
+        <td #cta> 
+          <input name="Cta" type="checkbox" value='1'> Cuenta corriente
+          <br>
+          <input name="Cta" type="checkbox" value='2'> Cuenta vista
+          <br>
+          <input name="Cta" type="checkbox" value='3'> Cuenta de ahorro
+        </td>
+      </tr>
+      <tr>
+        <td> Monto inicial: </td>
+        <td> <input #Monto type="number" formControl="montoInicial" required> </td>
+      </tr>
+      <tr>
+        <tr>
+          <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+        </tr>
+    </table>
+  </form>
+
