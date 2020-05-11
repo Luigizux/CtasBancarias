@@ -1,11 +1,10 @@
 
-    <form (submit)="false">
-        <input type="text" #Rut required>
+    <form [formGroup]="cuentasForm" (ngSubmit)="onSubmit()">
+        <input type="text" formControlName="rut" required>
         <br>
-        <button (click)="getTask(Rut.value)">Obtener cuentas</button>
+        <button type="submit" (click)="getTask()">Obtener cuentas</button>
     </form>
     <br>
-    Nombre usuario: {{ nombre }}
     <br>
 
         <table class="egt">

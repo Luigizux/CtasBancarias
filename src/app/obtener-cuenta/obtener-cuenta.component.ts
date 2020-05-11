@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ConsultasService } from './../Service/consultas.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { variable } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-obtener-cuenta',
@@ -9,17 +11,21 @@ import { ConsultasService } from './../Service/consultas.service';
 export class ObtenerCuentaComponent implements OnInit {
 
   constructor(private consultasService: ConsultasService) { }
-  Tipo;
+  
   nombre: string;
   apellido: string;
   public Cta: Array<Object> = [];
 
-  getTask(Rut) {
-    console.log(Rut);
+  cuentasForm = new FormGroup({
+    rut : new FormControl('', Validators.required)
+  })
+
+  getTask() {
+    this.Cta = [];
+    const Rut: string = this.cuentasForm.get('rut').value;
+    console.log('Mensaje: ' + Rut);
     this.consultasService.getTask(Rut)
     .subscribe(Respuesta => {
-      console.log('Mensajes: ' + Respuesta.cuenta.toString);
-
       this.nombre = Respuesta.nombre;
       this.apellido = Respuesta.nombre;
       let j: number = 0;
@@ -31,11 +37,13 @@ export class ObtenerCuentaComponent implements OnInit {
           tipo: i.tipoCuenta.nombreCuenta
         }
         j = j + 1;
-        console.log(i + " " + j);
-        
       }
       console.log(this.Cta);
     });
+  }
+  onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.warn(this.cuentasForm.value);
   }
   ngOnInit(): void {
   }
