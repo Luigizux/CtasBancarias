@@ -11,5 +11,5 @@ export class Usuario {
     public nombre: string = undefined;
     @JsonProperty('apellido', String, true)
     public apellido: string = undefined;
-    public cuenta?: Cuenta[];
+    public cuenta: Cuenta[];
 }

@@ -29,7 +29,7 @@ export class ConsultasService {
     const path = `${this.api}crearusuariobancario`;
     return this.http.post(path, task);
   }
-  deleteTask(rut: string) {
+  deleteTask(rut: number) {
     const path = `${this.api}obtenercuentas/${rut}`;
     return this.http.delete(path);
   }

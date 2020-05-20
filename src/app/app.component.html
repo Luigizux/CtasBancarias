@@ -342,20 +342,17 @@
   <h2>Resources</h2>
   <p>¿Qué deseas hacer?</p>
 
-  <div class="card-container">
-    <input type="hidden">
+  <div class="">
       <br>
       <button (click)="selection.value = 'Obtener'"> Obtener datos de usuario </button>
       <button (click)="selection.value = 'CrearUsuario'"> Crear usuario </button>
       <button (click)="selection.value = 'CrearCuenta'"> Crear cuenta </button>
-      <button (click)="selection.value = 'BorrarCuenta'"> Borrar cuenta </button>
       <br><br>
       <div class="card-container" [ngSwitch]="selection.value">
         <pre *ngSwitchDefault>  </pre>
         <pre *ngSwitchCase="'Obtener'"> <app-obtener-cuenta></app-obtener-cuenta> </pre>
         <pre *ngSwitchCase="'CrearUsuario'"> <app-crear-usuario></app-crear-usuario> </pre>
         <pre *ngSwitchCase="'CrearCuenta'"> <app-crear-cuenta></app-crear-cuenta> </pre>
-        <pre *ngSwitchCase="'BorrarCuenta'"> <app-borrar-cuenta></app-borrar-cuenta> </pre>
     </div>
   </div>
   <!-- Next Steps -->

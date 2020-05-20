@@ -1,27 +1,35 @@
-<form [formGroup]="profileForm">
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()" novalidate>
     <table >
       <tr>
         <td> Rut: </td>
-        <td> <input type="text" formControlName="rut" required> </td>
+        <td> <input type="text" formControlName="rut"> </td>
         <td> - <input type="text" formControlName="dv"> </td>
       </tr>
       <tr>
         <td> Nombre: </td>
-        <td> <input type="text" formControlName="nombre" required> </td>
+        <td> <input type="text" formControlName="nombre"> </td>
       </tr>
       <tr>
         <td> Apellido: </td>
-        <td> <input type="text" formControlName="apellido" required> </td>
+        <td> <input type="text" formControlName="apellido"> </td>
       </tr>
       <tr>
         <td> Tipo de cuenta: </td>
-        <td *ngFor="let i of checkTipo" formGroupName="cuentaForm"> 
-          <input name="Cta" type="checkbox" value="${i.idCta}"> {{ i.nombreCuenta }}
-          <input type="number" formControlName="montoInicial">
+        <td> 
+          <div *ngFor="let cta of checkTipo; let i=index">
+            <label>
+              <input type="checkbox" [value]="cta.id" (change)="onCheckboxChange($event)" />
+              {{ cta.name }}
+              <input type="number" [id]="cta.id" formArrayName="montoInicial" (change)="changeMonto($event)">
+            </label>
+          </div>
         </td>
       </tr>
       <tr>
         <tr>
+          <p class="error" *ngIf="this.profileForm.controls['checkTipo'].errors?.required">
+            Seleccione al menos una cuenta por favor.
+          </p>
           <button type="submit" (click)="createTask()">Submit</button>
         </tr>
     </table>

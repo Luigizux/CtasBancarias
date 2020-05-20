@@ -4,6 +4,7 @@ import { Cuenta } from '../Shared/Model/Cuenta';
 import { TipoCuenta } from '../Shared/Model/TipoCuenta';
 import { Usuario } from './../Shared/Model/Usuario'
 import { ConsultasService } from '../Service/consultas.service';
+import { Any } from 'json2typescript';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -12,98 +13,106 @@ import { ConsultasService } from '../Service/consultas.service';
 })
 export class CrearUsuarioComponent implements OnInit {
   public lisCuenta: Cuenta[] = [];
-  public cta = new Cuenta();
-  checkTipo : Array<Object> = [{
-    nombreCuenta: 'Cuenta corriente',
-    idCta: 1
-  },
-  {
-    nombreCuenta: 'Cuenta de ahorro',
-    idCta: 2
-  },
-  {
-    nombreCuenta: 'Cuenta vista',
-    idCta: 3
-  }]
-
   aux: number = 22222;
-  form = new FormControl('');
-
-  public profileForm = new FormGroup({
-    rut : new FormControl('', Validators.required),
-    dv: new FormControl('', Validators.required),
-    nombre: new FormControl('', Validators.required),
-    apellido: new FormControl('', Validators.required),
-    cuentaForm: new FormGroup({
-      nroCuenta: new FormControl(this.aux),
-      montoInicial: new FormControl('', Validators.required),
-      tipoDeCta: new FormControl('', Validators.required)
-    })
-  });
-  constructor(private consultasService: ConsultasService, private fb: FormBuilder) { }
+  profileForm: FormGroup; 
+  checkTipo: Array<Any> = [
+    { name: 'Cuenta corriente', id: 1 },
+    { name: 'Cuenta de ahorro', id: 2 },
+    { name: 'Cuenta vista', id: 3 }
+  ];
   
+  constructor(private consultasService: ConsultasService, private fb: FormBuilder) { 
+    //const formCheckbox = this.checkTipo.map(a => new FormControl(false));
+    //const control = this.checkTipo.map(c => new FormControl(false));
+    //control[0].setValue(true);
+
+    this.profileForm = this.fb.group({
+      checkTipo : this.fb.array([], [Validators.required]),
+      rut : new FormControl('', Validators.required),
+      dv: new FormControl(''),
+      nombre: new FormControl(''),
+      apellido: new FormControl(''),
+      montoInicial: this.fb.array([], [Validators.required])
+    })
+   }
+
+   onCheckboxChange(e) {
+    const checkArray: FormArray = this.profileForm.get('checkTipo') as FormArray;
+    
+    // console.log(checkArray.length);
+    if (e.target.checked) {
+      checkArray.push(new FormControl(e.target.value));
+    } else {
+      let i: number = 0;
+      checkArray.controls.forEach((item: FormControl) => {
+        if (item.value == e.target.value) {
+          checkArray.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
+  changeMonto(e) {
+    const arrMonto: FormArray = this.profileForm.get('montoInicial') as FormArray;
+    // console.log("arrmonto en changeMonto() = " + e.target.id);
+    if(e.target.value) {
+      arrMonto.push(new FormControl(e.target.value));
+      // console.log("el arrego = " + arrMonto.value);
+    }
+    else {
+      let i: number = 0;
+      arrMonto.controls.forEach((item: FormControl) => {
+        if (item.value == e.target.value) {
+          arrMonto.removeAt(i);
+          return;
+        }
+        i++;
+      });
+    }
+  }
+
   createTask()
   {
-    
-    let cuentaForm = this.profileForm.get("cuentaForm").get("nroCuenta");
-    // this.lisCuenta.push(cuentaForm);
-    let j = 0;
-    
-    console.log("change: " + cuentaForm);
-    
-    const tipo = new TipoCuenta();
-    
+    const checkArray: FormArray = this.profileForm.get('checkTipo') as FormArray;
+    const arrMonto: FormArray = this.profileForm.get('montoInicial') as FormArray;
+
+    // console.log('monto arreglo = ' + arrMonto.value)
     const user = new Usuario();
 
     user.rut = this.profileForm.get('rut').value;
     user.dv = this.profileForm.get('dv').value;;
     user.nombre = this.profileForm.get('nombre').value;;
     user.apellido = this.profileForm.get('apellido').value;
-    // this.cta.montoCuenta = cuentaForm.get("montoInicial").value;
-    // this.cta.numeroCuenta = this.aux;
-    // tipo.idCuenta = cuentaForm.get("tipoDeCta").value;
-    // this.cta.tipoCuenta = tipo;
-    // this.lisCuenta.push(this.cta);
+
+    let o = 0;
+    for (const i of checkArray.controls) {
+      const cta = new Cuenta();
+      const tipo = new TipoCuenta();
+    
+      tipo.idCuenta = parseInt(i.value);
+      cta.numeroCuenta = this.aux;
+
+      let e = 0;
+      for (const l of arrMonto.controls) {
+        if(o == e) {
+          // console.log("l.value = " + l.value);
+          cta.montoCuenta = parseInt(l.value);
+        }
+        e++
+      }
+      cta.tipoCuenta = tipo;
+      this.lisCuenta.push(cta);
+      this.aux = this.aux + 1;
+      o++;
+    }
     user.cuenta = this.lisCuenta;
 
-    this.aux = this.aux + 1;
-    
-    console.log("Rut: " + user.rut);
-    console.log("dv: " + user.dv);
-    console.log("nombre: " + user.nombre);
-    console.log("apellido: " + user.apellido);
-    console.log("monto: " + this.cta.montoCuenta);
-    console.log("numeroCta: " + this.cta.numeroCuenta);
-    console.log("idcta: " + tipo.idCuenta);
-    console.log("listadoCta: " + this.lisCuenta);
-    console.log("listado 2 cta: " + user.cuenta);
     this.consultasService.createTask(user).subscribe(respuesta => console.log(respuesta));
   }
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.form.value);
   }
   ngOnInit(): void {
-    this.profileForm = this.fb.group({
-      useremail: this.fb.array([])
-    });
   }
-  onChange(cta: number, monto, isChecked: boolean) {
-    const ctaArray = <FormArray>this.profileForm.controls.cuentaForm;
-
-    if (isChecked) {
-      this.cta.montoCuenta = monto;
-      this.cta.numeroCuenta = this.aux;
-      this.cta.tipoCuenta.idCuenta = cta;
-      this.lisCuenta.push(this.cta);
-      
-      // this.cta.push(new FormControl(cta));
-      this.profileForm.controls.cuentaForm.setValue(ctaArray);
-
-    } else {
-      let index = ctaArray.controls.findIndex(x => x.value == cta)
-      ctaArray.removeAt(index);
-    }
-  }
-  
 }

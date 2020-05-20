@@ -41,6 +41,14 @@ export class ObtenerCuentaComponent implements OnInit {
       console.log(this.Cta);
     });
   }
+  deleteTask(){
+    console.log();
+      this.consultasService.deleteTask(2321313)
+      .subscribe((data) => {
+        console.log("m: " + data);
+      });
+      
+  }
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.cuentasForm.value);
