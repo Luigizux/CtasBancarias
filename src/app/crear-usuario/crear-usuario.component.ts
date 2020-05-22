@@ -25,11 +25,13 @@ export class CrearUsuarioComponent implements OnInit {
     //const formCheckbox = this.checkTipo.map(a => new FormControl(false));
     //const control = this.checkTipo.map(c => new FormControl(false));
     //control[0].setValue(true);
-
+    const soloNum = /^([0-9])*$/;
     this.profileForm = this.fb.group({
       checkTipo : this.fb.array([], [Validators.required]),
-      rut : new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]),
-      dv: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]),
+      rut : new FormControl('', [Validators.required, Validators.minLength(7),
+        Validators.maxLength(8), Validators.pattern(soloNum)]),
+      dv: new FormControl('', [Validators.required, Validators.minLength(1),
+        Validators.maxLength(1)]),
       nombre: new FormControl('', Validators.required),
       apellido: new FormControl('', Validators.required),
       montoInicial: this.fb.array([], [Validators.required])

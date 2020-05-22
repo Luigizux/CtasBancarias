@@ -15,17 +15,18 @@ export class ObtenerCuentaComponent implements OnInit {
   nombre: string;
   apellido: string;
   public Cta: Array<Object> = [];
-
+  soloNum = /^([0-9])*$/;
   cuentasForm = new FormGroup({
-    rut : new FormControl('', Validators.required)
+    rut : new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(8), Validators.pattern(this.soloNum)])
   })
 
   getTask() {
-    this.Cta = [];
-    const Rut: string = this.cuentasForm.get('rut').value;
-    // console.log('Mensaje: ' + Rut);
-    this.consultasService.getTask(Rut)
-    .subscribe(Respuesta => {
+    if(this.cuentasForm.valid) {
+      this.Cta = [];
+      const Rut: string = this.cuentasForm.get('rut').value;
+      // console.log('Mensaje: ' + Rut);
+      this.consultasService.getTask(Rut)
+      .subscribe(Respuesta => {
       this.nombre = Respuesta.nombre;
       this.apellido = Respuesta.nombre;
       let j: number = 0;
@@ -40,6 +41,9 @@ export class ObtenerCuentaComponent implements OnInit {
       }
       // console.log(this.Cta);
     });
+    }else {
+      alert('Asegúrese de que el rut tenga el formato correcto (sin puntos ni dígito verificador)')
+    }
   }
   
   onSubmit() {
