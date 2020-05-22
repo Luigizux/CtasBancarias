@@ -1,6 +1,6 @@
 
     <form [formGroup]="cuentasForm" (ngSubmit)="onSubmit()" (submit)="false">
-        <input type="text" formControlName="rut" required>
+        <input type="text" formControlName="rut">
         <br>
         <button type="submit" (click)="getTask()">Obtener cuentas</button>
     </form>
@@ -12,13 +12,11 @@
               <td> Número de cuenta </td>
               <td> Tipo de cuenta </td>
               <td> Monto </td>
-              <td> Borrar cuenta </td>
             </tr>
             <tr *ngFor="let i of Cta">
               <td> {{ i.numeroCuenta }} </td>
               <td> {{ i.tipo }} </td>
               <td> {{ i.montoCuenta }} </td>
-              <td> <button (click)="deleteTask()"> Borrar </button> </td>
             </tr>
           </table>
 

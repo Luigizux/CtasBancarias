@@ -23,7 +23,7 @@ export class ObtenerCuentaComponent implements OnInit {
   getTask() {
     this.Cta = [];
     const Rut: string = this.cuentasForm.get('rut').value;
-    console.log('Mensaje: ' + Rut);
+    // console.log('Mensaje: ' + Rut);
     this.consultasService.getTask(Rut)
     .subscribe(Respuesta => {
       this.nombre = Respuesta.nombre;
@@ -38,20 +38,13 @@ export class ObtenerCuentaComponent implements OnInit {
         }
         j = j + 1;
       }
-      console.log(this.Cta);
+      // console.log(this.Cta);
     });
   }
-  deleteTask(){
-    console.log();
-      this.consultasService.deleteTask(2321313)
-      .subscribe((data) => {
-        console.log("m: " + data);
-      });
-      
-  }
+  
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    console.warn(this.cuentasForm.value);
+    // console.warn(this.cuentasForm.value);
   }
   ngOnInit(): void {
   }

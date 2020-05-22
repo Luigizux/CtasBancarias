@@ -30,7 +30,13 @@
           <p class="error" *ngIf="this.profileForm.controls['checkTipo'].errors?.required">
             Seleccione al menos una cuenta por favor.
           </p>
-          <button type="submit" (click)="createTask()">Submit</button>
+          <p class="error" *ngIf="this.profileForm.invalid">
+            Recuerde verificar lo siguiente: <br>
+            1.- El rut ingresado es correcto. <br>
+            2.- Seleccionó al menos una cuenta con su respectivo monto inicial. <br>
+            3.- Los campos fueron llenados correctamente. <br>
+          </p>
+          <button type="submit">Submit</button>
         </tr>
     </table>
   </form>

@@ -28,10 +28,10 @@ export class CrearUsuarioComponent implements OnInit {
 
     this.profileForm = this.fb.group({
       checkTipo : this.fb.array([], [Validators.required]),
-      rut : new FormControl('', Validators.required),
-      dv: new FormControl(''),
-      nombre: new FormControl(''),
-      apellido: new FormControl(''),
+      rut : new FormControl('', [Validators.required, Validators.minLength(7), Validators.maxLength(8)]),
+      dv: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(1)]),
+      nombre: new FormControl('', Validators.required),
+      apellido: new FormControl('', Validators.required),
       montoInicial: this.fb.array([], [Validators.required])
     })
    }
@@ -72,9 +72,8 @@ export class CrearUsuarioComponent implements OnInit {
       });
     }
   }
-
-  createTask()
-  {
+  onSubmit() {
+    if(this.profileForm.valid) {
     const checkArray: FormArray = this.profileForm.get('checkTipo') as FormArray;
     const arrMonto: FormArray = this.profileForm.get('montoInicial') as FormArray;
 
@@ -110,8 +109,12 @@ export class CrearUsuarioComponent implements OnInit {
     user.cuenta = this.lisCuenta;
 
     this.consultasService.createTask(user).subscribe(respuesta => console.log(respuesta));
-  }
-  onSubmit() {
+    this.profileForm.reset();
+    this.profileForm.controls.checkTipo.reset();
+    this.profileForm.controls.montoInicial.reset();
+    }else {
+      alert('Formulario no válido');
+    }
   }
   ngOnInit(): void {
   }
