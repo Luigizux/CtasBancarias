@@ -25,7 +25,7 @@ export class CrearUsuarioComponent implements OnInit {
     //const formCheckbox = this.checkTipo.map(a => new FormControl(false));
     //const control = this.checkTipo.map(c => new FormControl(false));
     //control[0].setValue(true);
-    const soloNum = /^([0-9])*$/;
+    const soloNum = /^([0-9-k_K])*$/;
     this.profileForm = this.fb.group({
       checkTipo : this.fb.array([], [Validators.required]),
       rut : new FormControl('', [Validators.required, Validators.minLength(7),
